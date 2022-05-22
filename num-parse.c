@@ -12,7 +12,7 @@ bool parse_num(const char* string) {
 	   if any of the following symbols occurs more than once
 	   then the given number is invalid
 	*/
-	int d_count = 0, pm_count = 0;
+	int d_count = 0, pm_count = 0, e_count = 0;
 	while(string[i]) {
 		if(isdigit(string[i])) {
 			// reads digits in the string until it encounters a character which is not a digit
@@ -37,6 +37,15 @@ bool parse_num(const char* string) {
 				}
 			}
 			i--;
+		} else if(string[i] == 'e') {
+			char prev = string[i-1];
+			if(!isdigit(prev) && prev != '.') {
+				return false;
+			}
+			while(string[i] == 'e') {
+				e_count++; i++;
+				if(e_count > 1) return false;
+			}
 		} else if(string[i] == '+' || string[i] == '-') {
 			// read the + or - until it encounters a character which is not + or -
 			// if pm_count is greater than 1 returns false
